@@ -112,6 +112,10 @@ export function useEntries() {
 		dispatch({ type: "add", data: { type, level } });
 	}
 
+	function addPainkillers(kind: Painkillers["kind"]) {
+		dispatch({ type: "add", data: { type: "painkillers", kind } })
+	}
+
 	function remove(id: number) {
 		dispatch({ type: "remove", id });
 	}
@@ -120,6 +124,7 @@ export function useEntries() {
 		entries: state.entries,
 		remove,
 		addAche,
+		addPainkillers,
 	};
 }
 

@@ -1,10 +1,10 @@
 import './app.css';
 import { useEntries } from './state';
-import type { Entry, Aches } from "./state";
+import type { Entry, Aches, Painkillers, EntryData } from "./state";
 
 
 function App() {
-	let { entries, addAche, remove } = useEntries();
+	let { entries, addAche, addPainkillers, remove } = useEntries();
 
 	return (
 		<div className="App">
@@ -33,6 +33,12 @@ function App() {
 				<button onClick={() => addAche("menstrualCramps", "red")}>Red</button> 
 			</p>
 
+			<p>
+				Painkillers:
+				<button onClick={() => addPainkillers("paracetamol")}>Paracetamol</button>
+				<button onClick={() => addPainkillers("paracetamol+ibuprofen")}>Paracetamol &amp; Ibuprofen</button>
+			</p>
+
 		</div>
 	);
 }
@@ -42,8 +48,9 @@ function Entry({ entry, remove }: { entry: Entry, remove: () => void }) {
 	let data = entry.data;
 	return <div>
 		{formatDate(entry.timestamp)} {formatTime(entry.timestamp)} <button onClick={remove}>X</button>: {
-		data.type == "headache" || data.type == "stomachache" || data.type == "menstrualCramps"  ? <Ache entry={entry} data={data} /> :
-		data.type
+		data.type == "headache" || data.type == "stomachache" || data.type == "menstrualCramps" ? <Ache entry={entry} data={data} /> :
+		data.type == "painkillers" ? <Painkillers entry={entry} data={data} /> :
+		(data as EntryData).type
 	}</div>
 }
 
@@ -63,6 +70,9 @@ function Ache({ entry, data }: { entry: Entry, data: Aches }) {
 	return <div>{data.type}: {data.level}</div>
 }
 
+function Painkillers({ entry, data }: { entry: Entry, data: Painkillers }) {
+	return <div>{data.kind ?? data.type}</div>
+}
 
 
 export default App;
