@@ -21,21 +21,9 @@
 	border-radius: 6px;
 	padding: 5px 6px 5px 10px;
 	display: flex;
-	gap: 14px;
+	gap: 10px;
 	
 	align-items: baseline;
-
-	&.green {
-		background: #79e479;
-	}
-	
-	&.yellow {
-		background: #fbde04;
-	}
-	
-	&.red {
-		background: #faa;
-	}
 
 	.time {
 		font-size: 12px;
@@ -50,15 +38,22 @@
 
 	.remove {
 		margin-left: auto;
-		//align-self: center;
 	}
 }
 
 
+.green {
+	background: hsl(120 67% 74%);
+}
+.yellow {
+	background: hsl(45 95% 70%);
+}
+.red {
+	background: hsl(0 90% 82%);
+}
+
 
 .ache {
-	.type {}
-
 	.level {
 		opacity: 0.5;
 		font-size: 0.75em;
@@ -66,8 +61,53 @@
 }
 
 button {
-	background: #ccc;
-	border-radius: 4px;
-	border: 1px solid #888;
-	padding: 0.25em 0.5em;
+	font-family: inherit;
+	font-size: inherit;
+
+	color: #000d;
+	background: #bbb;
+
+	padding: 0 8px 2px;
+	border-radius: 5px;
+	border: 1px solid #0003;
+
+	text-shadow: 1px 1px #fff4;
+	box-shadow: inset 1px 1px #fff2, 1px 1px #888;
+	
+	&:hover {
+		transform: translate(-1px, -1px);
+		box-shadow: inset 1px 1px #fff2, 1px 1px #888, 2px 2px #888;
+	}
+	&:active {
+		transform: translate(1px, 1px);
+		box-shadow: inset 1px 1px #fff2;
+	}
+}
+
+.adders {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+
+.ache-adder {
+	background: #ddd;
+	border-radius: 6px;
+	padding: 5px 6px 5px 10px;
+	display: flex;
+	gap: 6px;
+	align-items: center;
+
+	.label {
+		margin-right: auto;
+	}
+
+	button {
+		min-width: 4em;
+		flex-shrink: 0;
+		font-size: 12px;
+		color: #000a;
+		line-height: 24px;
+	}
 }

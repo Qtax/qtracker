@@ -10,7 +10,21 @@ export type Entry = {
 
 
 export type EntryData = Aches | Painkillers;
-export type Aches = Headache | Stomachache | MenstrualCramps;
+
+export type Aches = Headache | Stomachache | MenstrualCramps | KneePain | Sick;
+export type AcheTypes = Aches["type"];
+
+export const acheLabels: Record<AcheTypes, string> = {
+	headache: "Headache",
+	stomachache: "Stomachache",
+	kneePain: "Knee pain",
+	sick: "Sick",
+	menstrualCramps: "Menstrual cramps",
+};
+
+export function isAche(entry: EntryData): entry is Aches {
+	return Object.keys(acheLabels).includes(entry.type);
+}
 
 
 /**
@@ -34,6 +48,16 @@ export type Stomachache = {
 
 export type MenstrualCramps = {
 	type: "menstrualCramps"
+	level?: PainLevel | undefined;
+};
+
+export type Sick = {
+	type: "sick";
+	level?: PainLevel | undefined;
+};
+
+export type KneePain = {
+	type: "kneePain";
 	level?: PainLevel | undefined;
 };
 
@@ -108,7 +132,7 @@ export function useEntries() {
 		}));
 	}, [state]);
 
-	function addAche(type: Aches["type"], level: PainLevel) {
+	function addAche(type: AcheTypes, level: PainLevel) {
 		dispatch({ type: "add", data: { type, level } });
 	}
 
@@ -127,6 +151,8 @@ export function useEntries() {
 		addPainkillers,
 	};
 }
+
+export type UseEntries = ReturnType<typeof useEntries>;
 
 function initializer(initialState: State): State {
 	let stored = localStorage.getItem(STORAGE_KEY);

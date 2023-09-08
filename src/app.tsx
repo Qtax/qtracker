@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import './app.scss';
-import { useEntries } from './state';
-import type { Entry, Aches, Painkillers, EntryData } from "./state";
+import { acheLabels, isAche, useEntries } from './state';
+import type { Entry, Aches, Painkillers, EntryData, UseEntries, AcheTypes } from "./state";
 
 function truncDate(date: Date): Date {
 	let d = new Date(date);
@@ -28,35 +28,29 @@ function App() {
 				})}
 			</div>
 
-			<p>
-				Headache:
-				<button onClick={() => addAche("headache", "green")}>Green</button>
-				<button onClick={() => addAche("headache", "yellow")}>Yellow</button>
-				<button onClick={() => addAche("headache", "red")}>Red</button> 
-			</p>
-
-			<p>
-				Stomachache:
-				<button onClick={() => addAche("stomachache", "green")}>Green</button>
-				<button onClick={() => addAche("stomachache", "yellow")}>Yellow</button>
-				<button onClick={() => addAche("stomachache", "red")}>Red</button> 
-			</p>
-
-			<p>
-				Menstrual cramps:
-				<button onClick={() => addAche("menstrualCramps", "green")}>Green</button>
-				<button onClick={() => addAche("menstrualCramps", "yellow")}>Yellow</button>
-				<button onClick={() => addAche("menstrualCramps", "red")}>Red</button> 
-			</p>
-
-			<p>
-				Painkillers:
-				<button onClick={() => addPainkillers("paracetamol")}>Paracetamol</button>
-				<button onClick={() => addPainkillers("paracetamol+ibuprofen")}>Paracetamol &amp; Ibuprofen</button>
-			</p>
-
+			<div className="adders">
+				<div>
+					<button onClick={() => addPainkillers("paracetamol")}>Paracetamol</button>{" "}
+					<button onClick={() => addPainkillers("paracetamol+ibuprofen")}>Paracetamol &amp; Ibuprofen</button>
+				</div>
+				<AcheAdder type="headache" addAche={addAche} />
+				<AcheAdder type="stomachache" addAche={addAche} />
+				<AcheAdder type="menstrualCramps" addAche={addAche} />
+				<AcheAdder type="kneePain" addAche={addAche} />
+				<AcheAdder type="sick" addAche={addAche} />
+			</div>
 		</div>
 	);
+}
+
+
+function AcheAdder({ type, addAche }: { type: AcheTypes; addAche: UseEntries["addAche"]; }) {
+	return (<div className="ache-adder">
+		<span className="label">{acheLabels[type]}</span>
+		<button className="green" onClick={() => addAche(type, "green")}>Green</button>
+		<button className="yellow" onClick={() => addAche(type, "yellow")}>Yellow</button>
+		<button className="red" onClick={() => addAche(type, "red")}>Red</button> 
+	</div>);
 }
 
 
@@ -72,7 +66,7 @@ function Entry({ entry, remove }: { entry: Entry, remove: () => void }) {
 	return <div className={`entry ${level ?? ""}`}>
 		<FancyTime time={entry.timestamp} />
 
-		{data.type == "headache" || data.type == "stomachache" || data.type == "menstrualCramps" ?
+		{isAche(data) ?
 			<Ache entry={entry} data={data} /> :
 		data.type == "painkillers" ?
 			<Painkillers entry={entry} data={data} /> :
@@ -102,8 +96,8 @@ function zeroPad(n: number, padding = 2): string {
 }
 
 function Ache({ entry, data }: { entry: Entry, data: Aches }) {
-	return <div className={`ache ${data.level ?? ""}`}>
-		<span className="type">{data.type}</span>{" "}
+	return <div className="ache">
+		<span className="label">{acheLabels[data.type]}</span>{" "}
 		<span className="level">{data.level}</span>
 	</div>
 }
