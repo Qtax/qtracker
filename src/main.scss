@@ -1,0 +1,56 @@
+*,
+::after,
+::before {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	margin: 1em;
+	background: #eee;
+}
+
+.green {
+	background: hsl(120 67% 74%);
+}
+.yellow {
+	background: hsl(45 95% 70%);
+}
+.red {
+	background: hsl(0 89% 82%);
+}
+
+button {
+	font-family: inherit;
+	font-size: inherit;
+
+	color: #000d;
+	background: #bbb;
+
+	padding: 0 8px 2px;
+	border-radius: 5px;
+	border: 1px solid #0003;
+
+	text-shadow: 1px 1px #fff4;
+	box-shadow:
+		inset 1px 1px #fff2,
+		1px 1px #888;
+
+	&:hover {
+		transform: translate(-1px, -1px);
+		box-shadow:
+			inset 1px 1px #fff2,
+			1px 1px #888,
+			2px 2px #888;
+	}
+	&:active {
+		transform: translate(1px, 1px);
+		box-shadow: inset 1px 1px #fff2;
+	}
+}

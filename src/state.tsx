@@ -1,6 +1,5 @@
 import { useEffect, useReducer } from "react";
 
-
 export type Entry = {
 	id: number;
 	timestamp: Date;
@@ -8,30 +7,39 @@ export type Entry = {
 	data: EntryData;
 };
 
-
 export type EntryData = Aches | Painkillers;
 
-export type Aches = Headache | Stomachache | MenstrualCramps | KneePain | Sick;
+export type Aches =
+	| Headache
+	| Stomachache
+	| MenstrualCramps
+	| KneePain
+	| Sick
+	| Nausea
+	| Anxiety
+	| Stress;
 export type AcheTypes = Aches["type"];
 
 export const acheLabels: Record<AcheTypes, string> = {
 	headache: "Headache",
 	stomachache: "Stomachache",
 	kneePain: "Knee pain",
-	sick: "Sick",
 	menstrualCramps: "Menstrual cramps",
+	sick: "Sick",
+	nausea: "Nausea",
+	anxiety: "Anxiety",
+	stress: "Stress",
 };
 
 export function isAche(entry: EntryData): entry is Aches {
 	return Object.keys(acheLabels).includes(entry.type);
 }
 
-
 /**
  * Green light: I have a headache but I’m able to GO (i.e. "I have a headache but I'm going to work" or "I'm going to look after my kids")
  * Yellow light: I have to SLOW down (i.e. "I better take it easy or I might not make that meeting later. I have to be cautious.")
  * Red light: I have to STOP (i.e. "I have to stop what I'm doing, go home from work, go lie down, I can't look after my children", etc.)
- * 
+ *
  * Src: https://americanheadachesociety.org/news/the-traffic-light-of-headache/
  */
 export type PainLevel = "green" | "yellow" | "red";
@@ -47,12 +55,7 @@ export type Stomachache = {
 };
 
 export type MenstrualCramps = {
-	type: "menstrualCramps"
-	level?: PainLevel | undefined;
-};
-
-export type Sick = {
-	type: "sick";
+	type: "menstrualCramps";
 	level?: PainLevel | undefined;
 };
 
@@ -61,12 +64,30 @@ export type KneePain = {
 	level?: PainLevel | undefined;
 };
 
+export type Sick = {
+	type: "sick";
+	level?: PainLevel | undefined;
+};
+
+export type Nausea = {
+	type: "nausea";
+	level?: PainLevel | undefined;
+};
+
+export type Anxiety = {
+	type: "anxiety";
+	level?: PainLevel | undefined;
+};
+
+export type Stress = {
+	type: "stress";
+	level?: PainLevel | undefined;
+};
+
 export type Painkillers = {
 	type: "painkillers";
 	kind?: "paracetamol" | "ibuprofen" | "paracetamol+ibuprofen";
-}
-
-
+};
 
 export type State = {
 	usedIds: number;
@@ -76,8 +97,7 @@ export type State = {
 let initialState: State = {
 	usedIds: 0,
 	entries: [],
-}
-
+};
 
 export type AddAction = {
 	type: "add";
@@ -91,9 +111,8 @@ export type RemoveAction = {
 
 export type Action = AddAction | RemoveAction;
 
-
 export function reducer(state: State, action: Action): State {
-	switch(action.type) {
+	switch (action.type) {
 		case "add": {
 			let id = state.usedIds;
 			let item: Entry = {
@@ -112,11 +131,11 @@ export function reducer(state: State, action: Action): State {
 			let { id } = action;
 			return {
 				...state,
-				entries: state.entries.filter(entry => entry.id != id),
+				entries: state.entries.filter((entry) => entry.id != id),
 			};
 		}
 	}
-	
+
 	throw new Error("Unknown action");
 }
 
@@ -126,10 +145,13 @@ export function useEntries() {
 	let [state, dispatch] = useReducer(reducer, initialState, initializer);
 
 	useEffect(() => {
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(state, (key, value) => {
-			if (value instanceof Date) return value.toUTCString();
-			return value;
-		}));
+		localStorage.setItem(
+			STORAGE_KEY,
+			JSON.stringify(state, (key, value) => {
+				if (value instanceof Date) return value.toUTCString();
+				return value;
+			}),
+		);
 	}, [state]);
 
 	function addAche(type: AcheTypes, level: PainLevel) {
@@ -137,7 +159,7 @@ export function useEntries() {
 	}
 
 	function addPainkillers(kind: Painkillers["kind"]) {
-		dispatch({ type: "add", data: { type: "painkillers", kind } })
+		dispatch({ type: "add", data: { type: "painkillers", kind } });
 	}
 
 	function remove(id: number) {

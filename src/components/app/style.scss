@@ -1,0 +1,10 @@
+.app {
+	max-width: 440px;
+	margin: 0 auto;
+
+	.adders {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+}
