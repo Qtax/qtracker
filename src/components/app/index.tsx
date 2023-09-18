@@ -2,16 +2,25 @@ import "./style.scss";
 import { useEntries } from "../../state";
 import Entries from "../entries";
 import AcheAdder from "../ache-adder";
-import { useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import useOnClickOutside from "../../hooks/use-on-click-outside";
 
 export default function App() {
 	let { entries, addAche, addPainkillers, remove } = useEntries();
 
+	let lastEntriesLength = useRef(0);
+	useLayoutEffect(() => {
+		if (entries.length > lastEntriesLength.current) {
+			let scrollElem = document.scrollingElement || document.body;
+			scrollElem.scrollTop = scrollElem.scrollHeight;
+		}
+		lastEntriesLength.current = entries.length;
+	}, [entries.length]);
+
 	let [isOpen, setIsOpen] = useState(false);
 
-	let ref = useRef<HTMLDivElement>(null);
-	useOnClickOutside(ref, () => {
+	let addersRef = useRef<HTMLDivElement>(null);
+	useOnClickOutside(addersRef, () => {
 		setIsOpen(false);
 	});
 
@@ -33,7 +42,7 @@ export default function App() {
 
 			<div
 				className="adders"
-				ref={ref}
+				ref={addersRef}
 				style={{ display: isOpen ? undefined : "none" }}
 			>
 				<div>
