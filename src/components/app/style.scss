@@ -1,8 +1,69 @@
+$width: 440px;
+
 .app {
-	max-width: 440px;
 	margin: 0 auto;
+	max-width: $width;
+
+	.content {
+		margin: 1rem;
+		margin-bottom: 6rem;
+	}
+
+	.mini-nav {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
+
+		display: flex;
+
+		padding: 1rem;
+		padding-left: max(calc(50% - $width/2 + 1rem), 1rem);
+		padding-right: max(calc(50% - $width/2 + 1rem), 1rem);
+
+		background: linear-gradient(transparent, #dddc, #ddd);
+
+		.branding {
+			display: flex;
+			align-items: center;
+			margin-right: auto;
+			font-weight: bold;
+			color: #888;
+			text-shadow: 0 0 2px #ddd;
+
+			img {
+				width: 2em;
+				margin-right: 1em;
+			}
+		}
+
+		.main-add {
+			width: 6em;
+			font-weight: bold;
+			color: #666;
+			background: linear-gradient(
+				to top right,
+				hsl(0 89% 82%) -15%,
+				hsl(45 95% 70%) 45% 55%,
+				hsl(120 67% 74%) 115%
+			);
+		}
+	}
 
 	.adders {
+		position: fixed;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 100%;
+		max-width: $width;
+
+		padding: 1rem;
+		background: #eee;
+		border-radius: 4px 4px 0 0;
+		box-shadow: 0 0 50px 20px #666;
+
 		display: flex;
 		flex-direction: column;
 		gap: 10px;
