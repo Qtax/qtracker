@@ -7,7 +7,7 @@ export type Entry = {
 	data: EntryData;
 };
 
-export type EntryData = Aches | Painkillers;
+export type EntryData = Aches | Painkillers | Plain;
 
 export type Aches =
 	| Headache
@@ -89,6 +89,29 @@ export type Painkillers = {
 	kind?: "paracetamol" | "ibuprofen" | "paracetamol+ibuprofen";
 };
 
+export type Plain = Gym | Love | Aphthae | BirthControlPill | AdhdPill;
+export type PlainType = Plain["type"];
+
+export type Gym = {
+	type: "gym";
+};
+
+export type Love = {
+	type: "love";
+};
+
+export type Aphthae = {
+	type: "aphthae";
+};
+
+export type BirthControlPill = {
+	type: "birthControlPill";
+};
+
+export type AdhdPill = {
+	type: "adhdPill";
+};
+
 export type State = {
 	usedIds: number;
 	entries: Entry[];
@@ -162,6 +185,10 @@ export function useEntries() {
 		dispatch({ type: "add", data: { type: "painkillers", kind } });
 	}
 
+	function addPlain(type: PlainType) {
+		dispatch({ type: "add", data: { type } });
+	}
+
 	function remove(id: number) {
 		dispatch({ type: "remove", id });
 	}
@@ -171,6 +198,7 @@ export function useEntries() {
 		remove,
 		addAche,
 		addPainkillers,
+		addPlain,
 	};
 }
 

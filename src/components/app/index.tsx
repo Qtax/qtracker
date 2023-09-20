@@ -6,7 +6,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import useOnClickOutside from "../../hooks/use-on-click-outside";
 
 export default function App() {
-	let { entries, addAche, addPainkillers, remove } = useEntries();
+	let { entries, addAche, addPainkillers, addPlain, remove } = useEntries();
 
 	let lastEntriesLength = useRef(0);
 	useLayoutEffect(() => {
@@ -54,6 +54,18 @@ export default function App() {
 					>
 						Paracetamol &amp; Ibuprofen
 					</button>
+				</div>
+
+				<div>
+					<button onClick={() => addPlain("gym")}>Gym</button>{" "}
+					<button onClick={() => addPlain("love")}>Love</button>{" "}
+					<button onClick={() => addPlain("aphthae")}>Aphthae</button>{" "}
+					<button onClick={() => addPlain("birthControlPill")}>
+						The pill
+					</button>{" "}
+					<button onClick={() => addPlain("adhdPill")}>
+						ADHD pill
+					</button>{" "}
 				</div>
 
 				<AcheAdder type="headache" addAche={addAche} />
